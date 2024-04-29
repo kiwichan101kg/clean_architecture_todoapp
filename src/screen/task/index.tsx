@@ -1,6 +1,4 @@
-// "use client";
-import { Task, TaskDetail } from "@/domain/task";
-import { useParams, useRouter } from "next/navigation";
+import { Task } from "@/domain/task";
 import React from "react";
 
 const getTaskById = async (taskId: string): Promise<Task | undefined> => {
@@ -18,10 +16,8 @@ const getTaskById = async (taskId: string): Promise<Task | undefined> => {
   }
 };
 
-export const TaskDetailScreen = async ({ id }: { id: string }) => {
+export const TaskScreen = async ({ id }: { id: string }) => {
   const task = await getTaskById(id);
-  console.log("タスク詳細", task);
-  const strDate = formatDate(new Date(task!.dueDate));
 
   return (
     <div className="flex justify-center min-h-screen bg-gray-200">
@@ -39,7 +35,9 @@ export const TaskDetailScreen = async ({ id }: { id: string }) => {
 
         <div className="flex justify-between items-center py-2 border-b border-gray-300">
           <div className="text-gray-600 text-lg">期限</div>
-          <div className="text-gray-800 text-lg font-medium">{strDate}</div>
+          <div className="text-gray-800 text-lg font-medium">
+            {formatDate(new Date(task!.dueDate))}
+          </div>
         </div>
 
         <div className="flex justify-between items-center py-2 border-b border-gray-300">
@@ -62,6 +60,5 @@ const formatDate = (date: Date) => {
   const year = date.getFullYear();
   const month = (date.getMonth() + 1).toString().padStart(2, "0");
   const day = date.getDate().toString().padStart(2, "0");
-
   return `${year}/${month}/${day}`;
 };

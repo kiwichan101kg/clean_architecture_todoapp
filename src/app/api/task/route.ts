@@ -1,5 +1,4 @@
 import { TaskService } from "@/application/service/task";
-import { Task } from "@/domain/task";
 import { TaskRepository } from "@/infrastructure/repositories/task.repository";
 import { UserRepository } from "@/infrastructure/repositories/user.repository";
 import { NextResponse } from "next/server";
