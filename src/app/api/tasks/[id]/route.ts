@@ -9,7 +9,7 @@ const taskService = new TaskService(taskRepository, userRepository);
 
 // "http://localhost:3000/api/task/[id]"
 export async function GET(req: NextRequest): Promise<NextResponse> {
-  const id: string = req.url.split("/task/")[1];
+  const id: string = req.url.split("/tasks/")[1];
   const task = await taskService.getTaskById(id);
   return NextResponse.json({ message: "Success", data: task }, { status: 200 });
 }
