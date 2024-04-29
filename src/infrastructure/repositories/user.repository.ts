@@ -1,5 +1,4 @@
 import { UserRepositoryInterface } from "@/application/interfaces/user.repository";
-import { Task } from "@/domain/task";
 import { User } from "@/domain/user";
 
 export class UserRepository implements UserRepositoryInterface {

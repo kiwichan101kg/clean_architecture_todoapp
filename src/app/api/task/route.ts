@@ -7,7 +7,9 @@ const taskRepository = new TaskRepository();
 const userRepository = new UserRepository();
 const taskService = new TaskService(taskRepository, userRepository);
 
-export const getAllTasks = async (): Promise<Task[] | null> => {
+//"http://localhost:3000/api/task"
+export const GET = async (): Promise<any> => {
+  // DB処理を含む操作
   const tasks = await taskService.getAllTasks();
   return tasks;
 };

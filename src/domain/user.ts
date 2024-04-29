@@ -24,14 +24,6 @@ export class User {
     this.role = role;
   }
 
-  // 名前更新メソッド
-  public setUsername(newUsername: string): void {
-    if (!newUsername) {
-      throw new Error("Username is required and cannot be empty.");
-    }
-    this.username = newUsername;
-  }
-
   // パスワードは8文字以上の英数字
   private isValidPassword(password: string): boolean {
     return (
@@ -61,5 +53,13 @@ export class User {
   // コンテンツを編集できるかどうかを確認
   public canEditContent(): boolean {
     return this.role === "Admin"; // 現時点では管理者のみ編集可能と設定
+  }
+
+  // 名前更新メソッド
+  public setUsername(newUsername: string): void {
+    if (!newUsername) {
+      throw new Error("Username is required and cannot be empty.");
+    }
+    this.username = newUsername;
   }
 }

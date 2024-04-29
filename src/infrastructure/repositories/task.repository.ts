@@ -18,22 +18,14 @@ export class TaskRepository implements TaskRepositoryInterface {
   async findAllTasks(): Promise<Task[]> {
     const response = await fetch(`${this.baseUrl}/tasks`);
     const tasks = await response.json();
-    return tasks.map(
-      (taskData: any) =>
-        new Task(
-          taskData.title,
-          taskData.description,
-          taskData.dueDate,
-          taskData.priority
-        )
-    );
+    return tasks;
   }
 
   async findById(taskId: string): Promise<Task | null> {
     const response = await fetch(`${this.baseUrl}/tasks/${taskId}`);
     if (!response.ok) return null;
-    const data = await response.json();
-    return new Task(data.title, data.description, data.dueDate, data.priority);
+    const task = await response.json();
+    return task;
   }
 
   async delete(taskId: string): Promise<void> {

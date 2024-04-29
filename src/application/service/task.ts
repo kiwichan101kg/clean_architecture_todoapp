@@ -54,6 +54,18 @@ export class TaskService {
     }
   }
 
+  // タスクの削除
+  async deleteTask(userId: string, taskId: string) {
+    const task = await this.taskRepository.findById(taskId);
+    if (!task) throw new Error("Task not found.");
+    const user = await this.userRepository.findById(userId);
+    if (!user) throw new Error("User not found.");
+    if (!user.isAdmin()) throw new Error("Only admins can delete tasks.");
+
+    // DBに保存
+    return await this.taskRepository.delete(taskId);
+  }
+
   // ステータスの更新
   async editStatus(userId: string, taskId: string, status: Status) {
     const task = await this.taskRepository.findById(taskId);
@@ -65,17 +77,5 @@ export class TaskService {
     task.updateStatus(status);
     // DBに保存
     return this.taskRepository.save(task);
-  }
-
-  // タスクの削除
-  async deleteTask(userId: string, taskId: string) {
-    const task = await this.taskRepository.findById(taskId);
-    if (!task) throw new Error("Task not found.");
-    const user = await this.userRepository.findById(userId);
-    if (!user) throw new Error("User not found.");
-    if (!user.isAdmin()) throw new Error("Only admins can delete tasks.");
-
-    // DBに保存
-    return await this.taskRepository.delete(taskId);
   }
 }

@@ -3,7 +3,6 @@ import { randomUUID } from "crypto";
 export type Priority = "高" | "中" | "低";
 export type Status = "未着手" | "進行中" | "完了";
 
-// TODO：どこに定義するべきか
 export type TaskDetail = {
   title?: string;
   description?: string;
@@ -35,6 +34,7 @@ export class Task {
     this.validate();
   }
 
+  // 属性のバリデーション
   private validate() {
     if (!this.title) {
       throw new Error("Title cannot be empty.");
@@ -50,10 +50,12 @@ export class Task {
     }
   }
 
+  // ステータスの更新
   public updateStatus(newStatus: Status): void {
     this.status = newStatus;
   }
 
+  // タスクの更新
   // 編集項目があれば更新する
   public updateTask({
     title,

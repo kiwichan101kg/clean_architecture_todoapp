@@ -1,8 +1,15 @@
-import { AddTodo } from "@/components/home/AddTodo";
-import { TodoList } from "@/components/home/TodoList";
+// "use client";
+import { getTaskById } from "@/app/api/[taskId]/route";
+import { useParams, useRouter } from "next/navigation";
 import React from "react";
 
-export const TodoDetailScreen = () => {
+export const TodoDetailScreen = (props) => {
+  console.log("データ", props);
+
+  // 動的ルーティングのパラメータを取得
+  // const params = useParams();
+  // console.log(params.id);
+
   return (
     <div className="flex justify-center min-h-screen bg-gray-200">
       <div className="w-10/12 max-w-4xl mx-auto m-10 p-8 flex flex-col text-center rounded-lg bg-white shadow-lg">
@@ -33,4 +40,17 @@ export const TodoDetailScreen = () => {
       </div>
     </div>
   );
+};
+
+// TODO：動的ルーティングをサーバーサイドコンポーネントで行う方法は？
+export const getStaticProps = async ({ params }: any) => {
+  console.log("params", params.id);
+  const data = await getTaskById(params.id);
+
+  return {
+    props: {
+      data: data,
+    },
+    revalidate: 30,
+  };
 };
