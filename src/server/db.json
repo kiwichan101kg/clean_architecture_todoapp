@@ -29,18 +29,11 @@
       "priority": "高"
     },
     {
-      "id": "5",
-      "title": "システムの最適化",
-      "description": "システムのパフォーマンスボトルネックを特定し、最適化計画を立案する。",
-      "dueDate": "2024-05-06T12:00:00.000Z",
-      "priority": "中"
-    },
-    {
-      "id": "2e908cbc-79eb-49e7-a6b5-eb5729eaa176",
-      "title": "ログイン機能",
-      "description": "ログイン機能を追加する",
-      "dueDate": "2024-05-10",
-      "priority": "高",
+      "id": "336d57aa-88f8-4f18-bc3d-47b9ff5622ca",
+      "title": "ミーティング",
+      "description": "定期MTG",
+      "dueDate": "2024-05-06",
+      "priority": "中",
       "status": "未着手"
     }
   ],

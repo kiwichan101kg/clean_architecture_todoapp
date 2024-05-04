@@ -1,5 +1,6 @@
 "use client";
 import { Priority } from "@/domain/task";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
 
@@ -11,6 +12,7 @@ type FormValue = {
 };
 
 export const NewTaskScreen = () => {
+  const router = useRouter();
   const {
     handleSubmit,
     register,
@@ -52,6 +54,7 @@ export const NewTaskScreen = () => {
       const result = await response.json();
       console.log("Response:", result);
       alert("タスクが正常に作成されました");
+      router.push("/tasks");
     } catch (error) {
       console.error("Failed to submit task:", error);
       alert("タスクの作成に失敗しました");

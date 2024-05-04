@@ -13,3 +13,16 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   const task = await taskService.getTaskById(id);
   return NextResponse.json({ message: "Success", data: task }, { status: 200 });
 }
+
+// "http://localhost:3000/api/task/[id]"
+export async function DELETE(req: NextRequest): Promise<NextResponse> {
+  const id: string = req.url.split("/tasks/")[1]; //　パスパラメーターの上手い取得方法がわからなかった
+  console.log("リクエスト", id);
+
+  const deleteTaskReq = {
+    userId: "xxx",
+    taskId: id,
+  };
+  const task = await taskService.deleteTask(deleteTaskReq);
+  return NextResponse.json({ message: "Success", data: task }, { status: 200 });
+}

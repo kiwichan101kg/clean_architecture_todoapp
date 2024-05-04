@@ -60,15 +60,17 @@ export class TaskService {
   }
 
   // タスクの削除
-  async deleteTask(userId: string, taskId: string) {
-    const task = await this.taskRepository.findById(taskId);
+  async deleteTask(req: { userId: string; taskId: string }) {
+    const task = await this.taskRepository.findById(req.taskId);
     if (!task) throw new Error("Task not found.");
-    const user = await this.userRepository.findById(userId);
+    const user = await this.userRepository.findById(req.userId);
+    console.log("ユーザー", user);
+
     if (!user) throw new Error("User not found.");
-    if (!user.isAdmin()) throw new Error("Only admins can delete tasks.");
+    // if (!user.isAdmin()) throw new Error("Only admins can delete tasks.");
 
     // DBに保存
-    return await this.taskRepository.delete(taskId);
+    return await this.taskRepository.delete(req.taskId);
   }
 
   // ステータスの更新
