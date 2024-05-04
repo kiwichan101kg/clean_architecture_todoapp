@@ -34,6 +34,28 @@
       "description": "システムのパフォーマンスボトルネックを特定し、最適化計画を立案する。",
       "dueDate": "2024-05-06T12:00:00.000Z",
       "priority": "中"
+    },
+    {
+      "id": "2e908cbc-79eb-49e7-a6b5-eb5729eaa176",
+      "title": "ログイン機能",
+      "description": "ログイン機能を追加する",
+      "dueDate": "2024-05-10",
+      "priority": "高",
+      "status": "未着手"
+    }
+  ],
+  "users": [
+    {
+      "id": "xxx",
+      "username": "johnDoe",
+      "passwordHash": "hash12345",
+      "role": "Admin"
+    },
+    {
+      "id": "2",
+      "username": "janeDoe",
+      "passwordHash": "hash67890",
+      "role": "Member"
     }
   ]
 }

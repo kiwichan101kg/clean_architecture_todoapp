@@ -42,9 +42,9 @@ export class Task {
     if (!this.description) {
       throw new Error("Description cannot be empty.");
     }
-    if (!this.dueDate || this.dueDate < new Date()) {
-      throw new Error("Due date must be in the future.");
-    }
+    // if (!this.dueDate || this.dueDate < new Date()) {
+    //   throw new Error("Due date must be in the future.");
+    // }
     if (!["高", "中", "低"].includes(this.priority)) {
       throw new Error("Invalid priority.");
     }

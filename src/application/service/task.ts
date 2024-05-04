@@ -10,18 +10,23 @@ export class TaskService {
   ) {}
 
   // タスクの新規作成
-  async createTask(
-    userId: string,
-    title: string,
-    description: string,
-    dueDate: Date,
-    priority: Priority
-  ) {
-    const user = await this.userRepository.findById(userId);
+  async createTask(req: {
+    userId: string;
+    title: string;
+    description: string;
+    dueDate: Date;
+    priority: Priority;
+  }) {
+    const user = await this.userRepository.findById(req.userId);
     if (!user) throw new Error("User not found.");
-    if (!user.isAdmin()) throw new Error("Only admins can add tasks.");
+    // if (!user.isAdmin()) throw new Error("Only admins can add tasks.");
 
-    const task = new Task(title, description, dueDate, priority);
+    const task = new Task(
+      req.title,
+      req.description,
+      req.dueDate,
+      req.priority
+    );
     return await this.taskRepository.save(task);
   }
 
