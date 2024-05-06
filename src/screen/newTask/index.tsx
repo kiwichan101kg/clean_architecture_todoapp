@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
 
-type FormValue = {
+export type FormValue = {
   title: string;
   description: string;
   dueDate: Date;
