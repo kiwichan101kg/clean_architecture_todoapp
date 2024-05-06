@@ -27,6 +27,7 @@ export class TaskService {
       req.dueDate,
       req.priority
     );
+
     return await this.taskRepository.save(task);
   }
 
@@ -41,34 +42,51 @@ export class TaskService {
   }
 
   // タスクの編集
-  async editTask(userId: string, taskId: string, taskDetail: TaskDetail) {
-    const task = await this.taskRepository.findById(taskId);
+  async editTask(req: {
+    userId: string;
+    taskId: string;
+    title?: string;
+    description?: string;
+    dueDate?: Date;
+    priority?: Priority;
+  }) {
+    const task = await this.taskRepository.findById(req.taskId);
     if (!task) throw new Error("Task not found.");
-    const user = await this.userRepository.findById(userId);
+    const user = await this.userRepository.findById(req.userId);
     if (!user) throw new Error("User not found.");
-    if (!user.isAdmin()) {
-      throw new Error("Only admins can edit tasks.");
-    }
-    if (Object.keys(taskDetail).length) {
+
+    // 各プロパティがundefinedでない場合にのみタスクを更新
+    if (
+      req.title !== undefined ||
+      req.description !== undefined ||
+      req.dueDate !== undefined ||
+      req.priority !== undefined
+    ) {
       // タスクの更新
-      task.updateTask(taskDetail);
+      const updateTask: TaskDetail = {
+        title: req.title,
+        description: req.description,
+        dueDate: req.dueDate,
+        priority: req.priority,
+      };
+      task.updateTask(updateTask);
       // DBに保存
-      return await this.taskRepository.save(task);
+      return await this.taskRepository.update(task);
     } else {
-      throw new Error("edit task details required.");
+      throw new Error("At least one edit task detail required.");
     }
   }
 
   // タスクの削除
-  async deleteTask(userId: string, taskId: string) {
-    const task = await this.taskRepository.findById(taskId);
+  async deleteTask(req: { userId: string; taskId: string }) {
+    const task = await this.taskRepository.findById(req.taskId);
     if (!task) throw new Error("Task not found.");
-    const user = await this.userRepository.findById(userId);
+    const user = await this.userRepository.findById(req.userId);
     if (!user) throw new Error("User not found.");
-    if (!user.isAdmin()) throw new Error("Only admins can delete tasks.");
+    // if (!user.isAdmin()) throw new Error("Only admins can delete tasks.");
 
     // DBに保存
-    return await this.taskRepository.delete(taskId);
+    return await this.taskRepository.delete(req.taskId);
   }
 
   // ステータスの更新
