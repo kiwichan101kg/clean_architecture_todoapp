@@ -47,7 +47,7 @@ export class TaskRepository implements TaskRepositoryInterface {
     const task = new Task(
       taskData.title,
       taskData.description,
-      new Date(taskData.dueDate),
+      taskData.dueDate,
       taskData.priority,
       taskData.id
     );

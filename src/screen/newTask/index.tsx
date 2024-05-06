@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 export type FormValue = {
   title: string;
   description: string;
-  dueDate: Date;
+  dueDate: string;
   priority: Priority;
 };
 
@@ -107,8 +107,13 @@ export const NewTaskScreen = () => {
               type="date"
               {...register("dueDate", {
                 required: "期限の設定は必須です",
-                // validate: (value) =>
-                //   value >= today || "過去の日付は選択できません",
+                validate: (value) => {
+                  const today = new Date();
+                  today.setHours(0, 0, 0, 0); // 当日OKとする（今日の00:00:00に設定）
+                  return (
+                    new Date(value) > today || "過去の日付は選択できません"
+                  );
+                },
               })}
               className={`form-input px-4 py-2 border ${
                 errors.dueDate
