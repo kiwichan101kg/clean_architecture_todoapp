@@ -14,7 +14,7 @@ export class TaskService {
     userId: string;
     title: string;
     description: string;
-    dueDate: Date;
+    dueDate: string;
     priority: Priority;
   }) {
     const user = await this.userRepository.findById(req.userId);
@@ -47,7 +47,7 @@ export class TaskService {
     taskId: string;
     title?: string;
     description?: string;
-    dueDate?: Date;
+    dueDate?: string;
     priority?: Priority;
   }) {
     const task = await this.taskRepository.findById(req.taskId);

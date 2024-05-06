@@ -6,7 +6,7 @@ export type Status = "未着手" | "進行中" | "完了";
 export type TaskDetail = {
   title?: string;
   description?: string;
-  dueDate?: Date;
+  dueDate?: string;
   priority?: Priority;
 };
 
@@ -14,14 +14,14 @@ export class Task {
   public id: string;
   public title: string;
   public description: string;
-  public dueDate: Date;
+  public dueDate: string;
   public priority: Priority;
   public status: Status;
 
   constructor(
     title: string,
     description: string,
-    dueDate: Date,
+    dueDate: string,
     priority: Priority,
     id?: string
   ) {
@@ -43,9 +43,11 @@ export class Task {
     if (!this.description) {
       throw new Error("Description cannot be empty.");
     }
-    // if (!this.dueDate || this.dueDate < new Date()) {
-    //   throw new Error("Due date must be in the future.");
-    // }
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (!this.dueDate || new Date(this.dueDate) < today) {
+      throw new Error("Due date must be in the future.");
+    }
     if (!["高", "中", "低"].includes(this.priority)) {
       throw new Error("Invalid priority.");
     }
