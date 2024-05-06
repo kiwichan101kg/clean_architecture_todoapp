@@ -22,9 +22,10 @@ export class Task {
     title: string,
     description: string,
     dueDate: Date,
-    priority: Priority
+    priority: Priority,
+    id?: string
   ) {
-    this.id = randomUUID();
+    this.id = id || randomUUID();
     this.title = title;
     this.description = description;
     this.dueDate = dueDate;
