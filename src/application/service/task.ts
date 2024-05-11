@@ -19,7 +19,7 @@ export class TaskService {
   }) {
     const user = await this.userRepository.findById(req.userId);
     if (!user) throw new Error("User not found.");
-    // if (!user.isAdmin()) throw new Error("Only admins can add tasks.");
+    if (!User.isAdmin(user.role)) throw new Error("Only admins can add tasks.");
 
     const task = new Task(
       req.title,
