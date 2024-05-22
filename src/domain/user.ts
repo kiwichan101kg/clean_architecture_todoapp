@@ -7,7 +7,12 @@ export class User {
   public passwordHash: string;
   public role: Role;
 
-  constructor(username: string, password: string, role: Role = "Member") {
+  constructor(
+    username: string,
+    password: string,
+    role: Role = "Member",
+    id?: string
+  ) {
     if (!this.isValidPassword(password)) {
       throw new Error(
         "Password must be at least 8 characters long and include alphanumeric characters."
@@ -18,7 +23,7 @@ export class User {
       throw new Error("Username is required and cannot be empty.");
     }
 
-    this.id = randomUUID();
+    this.id = id || randomUUID();
     this.username = username;
     this.passwordHash = this.hashPassword(password);
     this.role = role;
@@ -46,8 +51,8 @@ export class User {
   }
 
   // 管理者かどうかを確認
-  public isAdmin(): boolean {
-    return this.role === "Admin";
+  public static isAdmin(role: string): boolean {
+    return role === "Admin";
   }
 
   // コンテンツを編集できるかどうかを確認

@@ -22,7 +22,7 @@ type createTaskReq = {
   userId: string;
   title: string;
   description: string;
-  dueDate: Date;
+  dueDate: string;
   priority: Priority;
 };
 // "http://localhost:3000/api/tasks"

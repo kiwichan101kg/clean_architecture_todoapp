@@ -2,9 +2,9 @@
   "tasks": [
     {
       "id": "1",
-      "title": "デバッグセッション変更",
-      "description": "最新のリリースで報告されたバグの根本原因を特定し、修正する。変更",
-      "dueDate": "2024-05-28",
+      "title": "デバッグセッション",
+      "description": "最新のリリースで報告されたバグの根本原因を特定し、修正する。",
+      "dueDate": "2024-05-22",
       "priority": "高",
       "status": "未着手"
     },
@@ -35,6 +35,14 @@
       "title": "ミーティング",
       "description": "定期MTG",
       "dueDate": "2024-05-07",
+      "priority": "中",
+      "status": "未着手"
+    },
+    {
+      "id": "be791907-8a7d-4362-9801-8faa3580d5c3",
+      "title": "新規",
+      "description": "あ",
+      "dueDate": "2024-05-30",
       "priority": "中",
       "status": "未着手"
     }

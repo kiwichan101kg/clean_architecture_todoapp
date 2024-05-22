@@ -4,6 +4,7 @@ import { Task } from "@/domain/task";
 export class TaskRepository implements TaskRepositoryInterface {
   private baseUrl: string = "http://localhost:3001";
 
+  // タスクの保存
   async save(task: Task): Promise<Task> {
     // DBにタスクを保存する処理の具体的な実装
     const response = await fetch(`${this.baseUrl}/tasks`, {
@@ -15,6 +16,30 @@ export class TaskRepository implements TaskRepositoryInterface {
     return new Task(data.title, data.description, data.dueDate, data.priority);
   }
 
+  // タスク一覧の取得
+  async findAllTasks(): Promise<Task[]> {
+    const response = await fetch(`${this.baseUrl}/tasks`);
+    const tasks = await response.json();
+    return tasks;
+  }
+
+  // タスクの取得
+  async findById(taskId: string): Promise<Task | null> {
+    const response = await fetch(`${this.baseUrl}/tasks/${taskId}`);
+    if (!response.ok) return null;
+    const taskData = await response.json();
+    // Task クラスのコンストラクタを使用してインスタンスを作成
+    const task = new Task(
+      taskData.title,
+      taskData.description,
+      taskData.dueDate,
+      taskData.priority,
+      taskData.id
+    );
+    return task;
+  }
+
+  // タスクの更新
   async update(task: Task): Promise<Task> {
     // DBにタスクを保存する処理の具体的な実装
     const response = await fetch(`${this.baseUrl}/tasks/${task.id}`, {
@@ -32,28 +57,7 @@ export class TaskRepository implements TaskRepositoryInterface {
     );
   }
 
-  async findAllTasks(): Promise<Task[]> {
-    const response = await fetch(`${this.baseUrl}/tasks`);
-    const tasks = await response.json();
-    return tasks;
-  }
-
-  async findById(taskId: string): Promise<Task | null> {
-    const response = await fetch(`${this.baseUrl}/tasks/${taskId}`);
-    if (!response.ok) return null;
-    const taskData = await response.json();
-
-    // Task クラスのコンストラクタを使用してインスタンスを作成
-    const task = new Task(
-      taskData.title,
-      taskData.description,
-      taskData.dueDate,
-      taskData.priority,
-      taskData.id
-    );
-    return task;
-  }
-
+  // タスクの削除
   async delete(taskId: string): Promise<void> {
     await fetch(`${this.baseUrl}/tasks/${taskId}`, {
       method: "DELETE",
