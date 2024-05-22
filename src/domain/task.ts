@@ -43,11 +43,11 @@ export class Task {
     if (!this.description) {
       throw new Error("Description cannot be empty.");
     }
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    if (!this.dueDate || new Date(this.dueDate) < today) {
-      throw new Error("Due date must be in the future.");
-    }
+    // const today = new Date();
+    // today.setHours(0, 0, 0, 0);
+    // if (!this.dueDate || new Date(this.dueDate) < today) {
+    //   throw new Error("Due date must be in the future.");
+    // }
     if (!["高", "中", "低"].includes(this.priority)) {
       throw new Error("Invalid priority.");
     }

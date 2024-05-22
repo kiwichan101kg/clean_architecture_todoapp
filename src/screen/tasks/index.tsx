@@ -1,5 +1,8 @@
+import { TaskService } from "@/application/service/task";
 import { AddTodo } from "@/components/tasks/AddTodo";
 import { TodoList } from "@/components/tasks/TodoList";
+import { TaskRepository } from "@/infrastructure/repositories/task.repository";
+import { UserRepository } from "@/infrastructure/repositories/user.repository";
 import React from "react";
 
 const getAllTasks = async () => {
@@ -17,8 +20,20 @@ const getAllTasks = async () => {
   }
 };
 
+// サーバーコンポーネントで直接呼び出すことができる
+const getAllTask2 = async () => {
+  const taskRepository = new TaskRepository();
+  const userRepository = new UserRepository();
+  const taskService = new TaskService(taskRepository, userRepository);
+
+  // DB処理を含む操作
+  const tasks = await taskService.getAllTasks();
+  return tasks;
+};
+
 export const TasksScreen = async () => {
-  const tasks = await getAllTasks();
+  // const tasks = await getAllTasks();
+  const tasks = await getAllTask2();
   console.log("レスポンス", tasks);
 
   return (
