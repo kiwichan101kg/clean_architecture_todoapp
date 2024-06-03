@@ -1,5 +1,13 @@
 import { TaskRepositoryInterface } from "@/application/interfaces/task.repository";
-import { Task } from "@/domain/task";
+import { Priority, Task } from "@/domain/task";
+import db from "@/lib/firebase/firebase";
+import {
+  Timestamp,
+  collection,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 
 export class TaskRepository implements TaskRepositoryInterface {
   private baseUrl: string = "http://localhost:3001";
@@ -18,24 +26,48 @@ export class TaskRepository implements TaskRepositoryInterface {
 
   // タスク一覧の取得
   async findAllTasks(): Promise<Task[]> {
-    const response = await fetch(`${this.baseUrl}/tasks`);
-    const tasks = await response.json();
+    const tasks = await getDocs(collection(db, "tasks")).then((snapshot) =>
+      snapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          id: data.id,
+          title: data.title as string,
+          description: data.description as string,
+          dueDate: formatDate(data.dueDate), // timestamp -> string
+          priority: data.priority as Priority,
+          status: data.status as string,
+        } as Task;
+
+        // const task = new Task(
+        //   data.title as string,
+        //   data.description as string,
+        //   String(data.dueDate),
+        //   data.priority as Priority,
+        //   data.id as string
+        // );
+        // return task;
+
+        // return { ...doc.data() } as Task;
+      })
+    );
     return tasks;
   }
 
   // タスクの取得
   async findById(taskId: string): Promise<Task | null> {
-    const response = await fetch(`${this.baseUrl}/tasks/${taskId}`);
-    if (!response.ok) return null;
-    const taskData = await response.json();
-    // Task クラスのコンストラクタを使用してインスタンスを作成
-    const task = new Task(
-      taskData.title,
-      taskData.description,
-      taskData.dueDate,
-      taskData.priority,
-      taskData.id
-    );
+    const col = collection(db, "tasks");
+    const q = query(col, where("id", "==", taskId));
+    const task = await getDocs(q).then((snapshot) => {
+      const data = snapshot.docs[0].data();
+      return {
+        id: data.id,
+        title: data.title,
+        description: data.description,
+        dueDate: formatDate(data.dueDate),
+        priority: data.priority as Priority,
+        status: data.status,
+      } as Task;
+    });
     return task;
   }
 
@@ -64,3 +96,8 @@ export class TaskRepository implements TaskRepositoryInterface {
     });
   }
 }
+
+const formatDate = (timestamp: Timestamp): string => {
+  const date = timestamp.toDate();
+  return date.toISOString().split("T")[0]; // "YYYY-MM-DD"形式に変換
+};
