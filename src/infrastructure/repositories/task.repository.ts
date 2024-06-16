@@ -4,24 +4,30 @@ import db from "@/lib/firebase/firebase";
 import {
   Timestamp,
   collection,
+  deleteDoc,
+  doc,
   getDocs,
   query,
+  setDoc,
+  updateDoc,
   where,
 } from "firebase/firestore";
 
 export class TaskRepository implements TaskRepositoryInterface {
-  private baseUrl: string = "http://localhost:3001";
-
   // タスクの保存
-  async save(task: Task): Promise<Task> {
+  async save(task: Task): Promise<void> {
     // DBにタスクを保存する処理の具体的な実装
-    const response = await fetch(`${this.baseUrl}/tasks`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(task),
-    });
-    const data = await response.json();
-    return new Task(data.title, data.description, data.dueDate, data.priority);
+    const docData = {
+      id: task.id,
+      title: task.title,
+      description: task.description,
+      dueDate: dateStringToTimestamp(task.dueDate), // Date -> timestamp
+      priority: task.priority,
+      status: task.status,
+    };
+
+    await setDoc(doc(db, "tasks", task.id), docData);
+    return;
   }
 
   // タスク一覧の取得
@@ -37,17 +43,6 @@ export class TaskRepository implements TaskRepositoryInterface {
           priority: data.priority as Priority,
           status: data.status as string,
         } as Task;
-
-        // const task = new Task(
-        //   data.title as string,
-        //   data.description as string,
-        //   String(data.dueDate),
-        //   data.priority as Priority,
-        //   data.id as string
-        // );
-        // return task;
-
-        // return { ...doc.data() } as Task;
       })
     );
     return tasks;
@@ -72,32 +67,36 @@ export class TaskRepository implements TaskRepositoryInterface {
   }
 
   // タスクの更新
-  async update(task: Task): Promise<Task> {
+  async update(taskId: string, task: Partial<Task>): Promise<void> {
     // DBにタスクを保存する処理の具体的な実装
-    const response = await fetch(`${this.baseUrl}/tasks/${task.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(task),
-    });
-    const data = await response.json();
-    return new Task(
-      data.title,
-      data.description,
-      data.dueDate,
-      data.priority,
-      data.id
-    );
+    const updateDocData = {
+      id: taskId,
+      title: task.title || null,
+      description: task.description || null,
+      dueDate: task.dueDate ? dateStringToTimestamp(task.dueDate) : null,
+      priority: task.priority || null,
+      status: task.status || null,
+    };
+    await updateDoc(doc(db, "tasks", taskId), updateDocData);
+    return;
   }
 
   // タスクの削除
   async delete(taskId: string): Promise<void> {
-    await fetch(`${this.baseUrl}/tasks/${taskId}`, {
-      method: "DELETE",
-    });
+    console.log("削除", taskId);
+
+    await deleteDoc(doc(db, "tasks", taskId));
   }
 }
 
+// Timestamp -> "YYYY-MM-DD"
 const formatDate = (timestamp: Timestamp): string => {
   const date = timestamp.toDate();
   return date.toISOString().split("T")[0]; // "YYYY-MM-DD"形式に変換
 };
+
+// "YYYY-MM-DD" -> Timestamp
+function dateStringToTimestamp(dateString: string): Timestamp {
+  const date = new Date(dateString);
+  return Timestamp.fromDate(date);
+}

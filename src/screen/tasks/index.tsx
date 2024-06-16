@@ -36,7 +36,6 @@ const getAllTask = async () => {
 
 export const TasksScreen = async () => {
   const tasks = await getAllTask();
-  console.log("レスポンス", tasks);
 
   return (
     <div className="flex justify-center min-h-screen bg-gray-200">
