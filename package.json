@@ -10,6 +10,7 @@
     "json-server": "json-server --watch src/server/db.json --port 3001"
   },
   "dependencies": {
+    "firebase": "^10.12.2",
     "json-server": "^1.0.0-alpha.23",
     "next": "14.1.4",
     "react": "^18",

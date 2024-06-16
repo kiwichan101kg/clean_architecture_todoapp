@@ -62,23 +62,15 @@ export class TaskService {
     if (!user) throw new Error("User not found.");
     if (!User.isAdmin(user.role)) throw new Error("Only admins can add tasks.");
 
-    if (
-      req.title !== undefined ||
-      req.description !== undefined ||
-      req.dueDate !== undefined ||
-      req.priority !== undefined
-    ) {
-      const updateTask: TaskDetail = {
-        title: req.title,
-        description: req.description,
-        dueDate: req.dueDate,
-        priority: req.priority,
-      };
-      // 編集内容に応じてタスクデータを更新
-      task.updateTask(updateTask);
+    const updateTask: Partial<Task> = {};
+    if (req.title !== undefined) updateTask.title = req.title;
+    if (req.description !== undefined) updateTask.description = req.description;
+    if (req.dueDate !== undefined) updateTask.dueDate = req.dueDate;
+    if (req.priority !== undefined) updateTask.priority = req.priority;
 
+    if (Object.keys(updateTask).length > 0) {
       // DBに保存
-      return await this.taskRepository.update(task);
+      return await this.taskRepository.update(task.id, updateTask);
     } else {
       throw new Error("At least one edit task detail required.");
     }
