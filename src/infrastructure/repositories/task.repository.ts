@@ -1,6 +1,6 @@
 import { TaskRepositoryInterface } from "@/application/interfaces/task.repository";
 import { Priority, Task } from "@/domain/task";
-import db from "@/lib/firebase/firebase";
+import { db } from "@/lib/firebase/firebase";
 import {
   Timestamp,
   collection,

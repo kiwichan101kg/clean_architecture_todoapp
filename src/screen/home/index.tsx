@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { SighIn } from "@/components/home/SighIn";
 import React from "react";
 
 export const HomeScreen = async () => {
@@ -10,11 +10,7 @@ export const HomeScreen = async () => {
           タスクを管理し、生産性を向上させましょう。
         </p>
         <div className="flex justify-center gap-4 mb-4">
-          <Link href="/tasks">
-            <div className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow">
-              タスク一覧
-            </div>
-          </Link>
+          <SighIn />
         </div>
         <footer className="text-sm text-gray-500 mt-10">
           © 2024 TODO APP, Inc. All rights reserved.

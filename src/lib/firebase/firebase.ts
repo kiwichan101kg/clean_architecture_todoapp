@@ -1,19 +1,20 @@
 import { initializeApp } from "firebase/app";
+import { GoogleAuthProvider, getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_APIKEY,
-  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.FIREBASE_PROJECT_ID,
-  storageBucket: process.env.FIREBASE_STRAGE_BUCKET,
-  messagingSenderId: process.env.FIREBASE_MASSAGING_SENDER_ID,
-  appId: process.env.FIREBASE_APP_ID,
+  authDomain: "clean-architecture-todoapp.firebaseapp.com",
+  projectId: "clean-architecture-todoapp",
+  storageBucket: "clean-architecture-todoapp.appspot.com",
+  messagingSenderId: "698447677811",
+  appId: "1:698447677811:web:c0db685f83868c31799d06",
 };
+console.log(process.env.FIREBASE_APIKEY);
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 // Initialize Cloud Firestore and get a reference to the service
-const db = getFirestore(app);
-
-export default db;
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+export const provider = new GoogleAuthProvider();
