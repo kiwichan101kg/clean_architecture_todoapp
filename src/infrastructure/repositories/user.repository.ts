@@ -1,6 +1,6 @@
 import { UserRepositoryInterface } from "@/application/interfaces/user.repository";
 import { User } from "@/domain/user";
-import db from "@/lib/firebase/firebase";
+import { db } from "@/lib/firebase/firebase";
 import {
   collection,
   doc,
