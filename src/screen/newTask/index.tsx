@@ -1,7 +1,9 @@
 "use client";
+import { FileUploader } from "@/components/FileUploader";
 import { Priority } from "@/domain/task";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
 export type FormValue = {
@@ -12,12 +14,12 @@ export type FormValue = {
 };
 
 export const NewTaskScreen = () => {
+  const [images, setImages] = useState<string[] | null>(null);
   const router = useRouter();
   const {
     handleSubmit,
     register,
     formState: { errors },
-    watch,
   } = useForm<FormValue>({
     defaultValues: {
       title: "",
@@ -26,8 +28,6 @@ export const NewTaskScreen = () => {
       priority: undefined,
     },
   });
-
-  const today = new Date();
 
   const onSubmit = async (data: FormValue) => {
     console.log("Submitting data", data);
@@ -142,6 +142,26 @@ export const NewTaskScreen = () => {
           </div>
           <div className="text-red-500 text-sm mb-5 text-right">
             {errors.description && <p>{errors.description.message}</p>}
+          </div>
+
+          <FileUploader setImages={setImages} />
+          <div className="mt-4 grid grid-cols-3 gap-4">
+            {images !== null &&
+              images.length >= 1 &&
+              images.map((image, index) => (
+                <div
+                  key={index}
+                  className="rounded-lg shadow-lg overflow-hidden"
+                >
+                  <Image
+                    src={image}
+                    alt={`Uploaded Image ${index}`}
+                    width={300}
+                    height={300}
+                    className="object-cover"
+                  />
+                </div>
+              ))}
           </div>
 
           <button

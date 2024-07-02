@@ -11,8 +11,8 @@ export const SighIn = () => {
 
   const signInWithGoogle = () => {
     signInWithPopup(auth, provider).then((result) => {
-      // console.log(result);
-      // router.push("/tasks");
+      console.log(result);
+      router.push("/tasks");
     });
   };
   console.log(user);
